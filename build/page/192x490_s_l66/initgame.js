@@ -25,7 +25,7 @@ try {
             hmUI.setLayerScrolling(false);
 
             hmFS.SysProSetInt("speed", 9);
-            hmFS.SysProSetInt("interval", 1500);
+            hmFS.SysProSetInt("interval", 500);
 
             hmFS.SysProSetInt("road", "0");
 

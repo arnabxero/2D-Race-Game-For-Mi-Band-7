@@ -207,7 +207,6 @@ try {
                   });
                   scoreIncrement = 0;
                   extraScoreFromSpeed = 0;
-
                 }
                 warningAnimCreated = true;
               } else {
@@ -216,7 +215,6 @@ try {
                 warningAnimCreated = false;
                 scoreIncrement = 1;
                 extraScoreFromSpeed = hmFS.SysProGetInt("speed");
-
               }
             }
 
@@ -317,7 +315,7 @@ try {
                 src: carName,
               });
 
-              timer.createTimer(0, 30, function () {
+              var singleEnemyTimer = timer.createTimer(0, 30, function () {
                 initYPos = initYPos + movePos;
 
                 enemyCar.setProperty(hmUI.prop.MORE, {
@@ -325,10 +323,11 @@ try {
                   y: initYPos,
                 });
 
-                if (initYPos > 430) {
-                  // scoreNum = scoreNum + 1;
-                  hmUI.deleteWidget(enemyCar);
-                }
+                // if (initYPos > 430) {
+                //   // scoreNum = scoreNum + 1;
+                //   hmUI.deleteWidget(enemyCar);
+                //  // timer.stopTimer(singleEnemyTimer);
+                // }
 
                 /////////////////////////// Collision Detection ///////////////////////////
                 let enemyCar_CommonWidth = 18;
@@ -394,6 +393,12 @@ try {
                       };
                     })(e),
                   });
+                }
+
+                if (initYPos > 430) {
+                  // scoreNum = scoreNum + 1;
+                  hmUI.deleteWidget(enemyCar);
+                  timer.stopTimer(singleEnemyTimer);
                 }
               });
             }

@@ -95,7 +95,7 @@ try {
                   hmFS.SysProSetInt("interval", current_Interval - 100);
                   current_Interval = hmFS.SysProGetInt("interval");
 
-                  if(current_Interval < 1500) {
+                  if(current_Interval < 100) {
                     hmFS.SysProSetInt("interval", current_Interval + 100);
                     current_Interval = hmFS.SysProGetInt("interval");
                   }
