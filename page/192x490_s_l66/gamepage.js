@@ -21,6 +21,7 @@ try {
             hmUI.setLayerScrolling(false);
 
             ////////////////////////////////////////////////
+            var roadTimer = "";
             // Create the road animation
             function createRoad() {
               let img_height = 964;
@@ -32,7 +33,7 @@ try {
                 src: "road/road_" + hmFS.SysProGetInt("road") + ".png",
               });
 
-              timer.createTimer(0, 1, function () {
+              roadTimer = timer.createTimer(0, 1, function () {
                 yPos += 1;
 
                 if (yPos > 0) {
@@ -57,10 +58,23 @@ try {
 
             /////////////////////////////////////
 
+            let currentCarFrame = 0;
+
             const car = hmUI.createWidget(hmUI.widget.IMG, {
               x: x_current,
               y: y_current,
-              src: "car/car_main.png",
+              src: "car/car_main_normal_" + currentCarFrame + ".png",
+            });
+
+            const frameLimit = 4;
+            const animateCar = timer.createTimer(0, 100, function () {
+              currentCarFrame++;
+              if (currentCarFrame > frameLimit) {
+                currentCarFrame = 0;
+              }
+              car.setProperty(hmUI.prop.MORE, {
+                src: "car/car_main_normal_" + currentCarFrame + ".png",
+              });
             });
 
             // const car = hmUI.createWidget(hmUI.widget.IMG_ANIM, {
@@ -341,14 +355,36 @@ try {
                   // hmApp.gotoPage({
                   //   url: "page/192x490_s_l66/gameoverpage",
                   // });
-                  hmUI.deleteWidget(enemyCar);
-                  hmUI.deleteWidget(car);
+                  // hmUI.deleteWidget(enemyCar);
+                  // hmUI.deleteWidget(car);
                   hmUI.deleteWidget(left_btn);
                   hmUI.deleteWidget(right_btn);
                   hmUI.deleteWidget(up_btn);
                   hmUI.deleteWidget(down_btn);
-                  hmUI.deleteWidget(score);
+                  // hmUI.deleteWidget(score);
                   timer.stopTimer(enemyCreatorTimer);
+                  timer.stopTimer(roadTimer);
+                  //timer.stopTimer(singleEnemyTimer);
+                  timer.stopTimer(scoreTimer);
+                  timer.stopTimer(animateCar);
+
+                  let currentBlustFrame = 0;
+                  const blustFrameLimit = 6;
+
+                  const carBlustAnimation = timer.createTimer(
+
+                    0,
+                    100,
+                    function () {
+                      car.setProperty(hmUI.prop.MORE, {
+                        src: "car/car_blust_" + currentBlustFrame + ".png",
+                      });
+                      currentBlustFrame++;
+                      if (currentBlustFrame > blustFrameLimit) {
+                          currentBlustFrame = 0;
+                      }
+                    }
+                  );
 
                   var gameOverAnim = hmUI.createWidget(hmUI.widget.IMG_ANIM, {
                     x: 0,
@@ -414,7 +450,7 @@ try {
             });
 
             // Update ScoreBoard
-            timer.createTimer(0, 1000, function () {
+            const scoreTimer = timer.createTimer(0, 1000, function () {
               scoreNum = scoreNum + scoreIncrement + extraScoreFromSpeed;
               score.setProperty(hmUI.prop.MORE, {
                 text: "Score: " + scoreNum,
